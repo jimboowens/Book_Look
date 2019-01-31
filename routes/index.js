@@ -12,7 +12,7 @@ router.get('/home',(req,res)=>{
 router.get('/register',(req, res)=>{
   let msg;
   if(req.query.msg == 'register'){
-      msg = 'This email adress is already registered.';
+    msg = 'This email adress is already registered.';
   }
   res.render('register',{msg})
 });
@@ -23,14 +23,14 @@ router.post('/registerProcess',(req, res, next)=>{
   connection.query(checkUserQuery,[req.body.email],(err,results)=>{
     if(err)throw err;
     if(results.length != 0){
-        res.redirect('/register?msg=register');
+      res.redirect('/register?msg=register');
     }else{
-      const insertUserQuery = `INSERT INTO users (name, email, hash)
-          VALUES
-      (?,?,?)`;
+      const insertUserQuery = `INSERT INTO users (user_ID,email,password)
+      VALUES
+    (default,?,?);`;
       connection.query(insertUserQuery,[req.body.name, req.body.email, hashedPass],(err2, results2)=>{
-        if(err2){throw err2;}
-        res.redirect('/?msg=regSuccess');
+      if(err2){throw err2;}
+      res.redirect('/?msg=regSuccess');
       });
     };
   });
@@ -40,9 +40,9 @@ router.post('/registerProcess',(req, res, next)=>{
 router.get('/login', (req, res, next)=>{
   let msg;
   if(req.query.msg == 'noUser'){
-      msg = '<h2 class="text-danger">This email is not registered in our system. Please try again or register!</h2>'
+    msg = '<h2 class="text-danger">This email is not registered in our system. Please try another email or register.</h2>'
   }else if(req.query.msg == 'badPass'){
-      msg = '<h2 class="text-warning">This password is not associated with this email. Please enter again</h2>'
+    msg = '<h2 class="text-warning">This password is not associated with this email. Please enter again</h2>'
   }
 res.render('login',{msg});
 });
@@ -52,22 +52,22 @@ router.post('/loginProcess',(req, res, next)=>{
   const password = req.body.password;
   const checkPasswordQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(checkPasswordQuery,[email],(err, results)=>{
-      if(err)throw err;
-      if(results.length == 0 ){
-          res.redirect('/login?msg=noUser');
+    if(err)throw err;
+    if(results.length == 0 ){
+      res.redirect('/login?msg=noUser');
+    }else{
+      const passwordsMatch = bcrypt.compareSync(password,results[0].hash);
+      if(!passwordsMatch){
+        res.redirect('/login?msg=badPass');
       }else{
-          const passwordsMatch = bcrypt.compareSync(password,results[0].hash);
-          if(!passwordsMatch){
-              res.redirect('/login?msg=badPass');
-          }else{
-              console.log(results[0].id)
-              req.session.name = results[0].name;
-              req.session.email = results[0].email;
-              req.session.uid = results[0].id;
-              req.session.loggedIn = true;
-              res.redirect('/?msg=loginSuccess');
-          }
+        console.log(results[0].id)
+        req.session.name = results[0].name;
+        req.session.email = results[0].email;
+        req.session.uid = results[0].id;
+        req.session.loggedIn = true;
+        res.redirect('/?msg=loginSuccess');
       }
+    }
   })
 });
 
