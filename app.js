@@ -6,8 +6,19 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const config = require('./config');
 
 var app = express();
+let helmet = require('helmet')
+app.use (helmet());
+const bcrypt = require('bcrypt-nodejs');
+const expressSession = require('express-session');
+const sessionOptions = config.sessionSecret;
+const mysql = require('mysql');
+let connection = mysql.createConnection(config.db);
+connection.connect()
+const multer = require ('multer');
+const upload = multer({dest: `public/images`})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
