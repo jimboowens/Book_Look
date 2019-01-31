@@ -21,18 +21,18 @@ router.post('/registerProcess',(req, res, next)=>{
   const hashedPass = bcrypt.hashSync(req.body.password);
   const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(checkUserQuery,[req.body.email],(err,results)=>{
-      if(err)throw err;
-      if(results.length != 0){
-          res.redirect('/register?msg=register');
-      }else{
-          const insertUserQuery = `INSERT INTO users (name, email, hash)
-              VALUES
-          (?,?,?)`;
-          connection.query(insertUserQuery,[req.body.name, req.body.email, hashedPass],(err2, results2)=>{
-              if(err2){throw err2;}
-              res.redirect('/?msg=regSuccess');
-          });
-      };
+    if(err)throw err;
+    if(results.length != 0){
+        res.redirect('/register?msg=register');
+    }else{
+      const insertUserQuery = `INSERT INTO users (name, email, hash)
+          VALUES
+      (?,?,?)`;
+      connection.query(insertUserQuery,[req.body.name, req.body.email, hashedPass],(err2, results2)=>{
+        if(err2){throw err2;}
+        res.redirect('/?msg=regSuccess');
+      });
+    };
   });
 });
 
