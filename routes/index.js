@@ -1,14 +1,16 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const config = require('../config');
 const bcrypt = require('bcrypt-nodejs');
 const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
-router.use(expressSession(sessionOptions))
 const mysql = require('mysql');
-let connection = mysql.createConnection(config.db);
+const connection = mysql.createConnection(config.db);
+const loggedIn = false;
+const fetch = require('node-fetch');
+
+router.use(expressSession(sessionOptions));
 connection.connect()
-let loggedIn = false;
 
 router.use('*',(req, res, next)=>{
   // console.log("Middleware is working!");
@@ -21,7 +23,7 @@ router.use('*',(req, res, next)=>{
       res.locals.id = "";
       res.locals.email = "";
       res.locals.loggedIn = false;
-      loggedIn = false;
+      // loggedIn = false;
   }
   next();
 });
@@ -40,8 +42,21 @@ router.get('/',(req, res, next)=>{
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
   }
-res.render('index', {msg});
+  res.render('index', {msg});
 });
+
+router.get('/trending', (req,res)=>{
+  let url = `https://api.nytimes.com/svc/books/v3/lists.json?list-name=`;
+
+  fetch(`${url}hardcover-fiction&api-key=${config.apiKey}`, {
+    method: `get`,
+  })
+  .then(response => { return response.json(); })
+  .then(json => { 
+    console.log(json)
+    res.render('trending', {json}); 
+  });
+})
 
 router.get('/home',(req,res)=>{
   res.redirect('/');
