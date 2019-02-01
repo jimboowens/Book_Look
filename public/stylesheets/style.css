@@ -1,3 +1,7 @@
+html{
+  visibility: visible;
+}
+
 body {
   background-image: url("/images/libraryStacks.jpg");
   background-repeat: no-repeat;
@@ -68,4 +72,8 @@ body {
   border-radius: 8px;
   border: 2px solid rgba(182, 183, 184, 0.8);
   /* margin: 0 25%; */
+}
+
+.thing-to-be-filled{
+  height: 400px;
 }

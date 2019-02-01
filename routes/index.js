@@ -1,8 +1,45 @@
 var express = require('express');
 var router = express.Router();
+const config = require('../config');
+const bcrypt = require('bcrypt-nodejs');
+const expressSession = require('express-session');
+const sessionOptions = config.sessionSecret;
+router.use(expressSession(sessionOptions))
+const mysql = require('mysql');
+let connection = mysql.createConnection(config.db);
+connection.connect()
+let loggedIn = false;
+let msg='';
 
-router.get('/',(req, res, next)=> {
-  res.render('index', {});
+router.use('*',(req, res, next)=>{
+  // console.log("Middleware is working!");
+  if(loggedIn){
+      // res.locals is the variable that gets sent to the view
+      res.locals.name = req.session.name;
+      res.locals.id = req.session.id;
+      res.locals.email = req.session.email;
+      res.locals.loggedIn = true;
+  }else{
+      res.locals.name = "";
+      res.locals.id = "";
+      res.locals.email = "";
+      res.locals.loggedIn = false;
+      loggedIn = false;
+  }
+  next();
+});
+
+
+router.get('/',(req, res, next)=>{
+  let msg;
+  if(req.query.msg == 'regSuccess'){
+    msg = 'You have successfully registered.';
+  }else if(req.query.msg == 'loginSuccess'){
+    msg = 'You have successfully logged in.';
+  }else if (req.query.msg == 'logOutSuccess'){
+    msg = 'You have sucessfully logged out.'
+  }
+res.render('index', {});
 });
 
 router.get('/home',(req,res)=>{
@@ -65,6 +102,7 @@ router.post('/loginProcess',(req, res, next)=>{
         req.session.email = results[0].email;
         req.session.uid = results[0].id;
         req.session.loggedIn = true;
+        loggedIn = true;
         res.redirect('/?msg=loginSuccess');
       }
     }
@@ -78,7 +116,8 @@ router.post('/loginProcess',[],(req,res)=>{
 
 router.get('/logout',(req, res, next)=>{
   req.session.destroy();
-  res.redirect('/login?msg=loggedOut')
+  loggedIn = false;
+  res.redirect('/?msg=logoutSuccess')
 });
 
 module.exports = router;
