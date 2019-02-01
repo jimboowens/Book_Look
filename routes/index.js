@@ -9,7 +9,6 @@ const mysql = require('mysql');
 let connection = mysql.createConnection(config.db);
 connection.connect()
 let loggedIn = false;
-let msg='';
 
 router.use('*',(req, res, next)=>{
   // console.log("Middleware is working!");
@@ -34,9 +33,9 @@ router.get('/',(req, res, next)=>{
     msg = 'You have successfully registered.';
   }else if (req.query.msg == 'loginSuccess'){
     msg = 'You have successfully logged in.';
-  }else if (req.query.msg == 'logOutSuccess'){
+  }else if (req.query.msg == 'logoutSuccess'){
     msg = 'You have sucessfully logged out.'
-  }else if (req.query.msg == 'logOutFail'){
+  }else if (req.query.msg == 'logoutFail'){
     msg = 'You have not logged in yet.'
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
@@ -89,11 +88,11 @@ res.render('login',{msg});
 });
 
 router.post('/loginProcess',(req, res, next)=>{
-  const email =  req.body.email;
+  const email = req.body.email;
   const password = req.body.password;
-  const checkPasswordQuery = `SELECT * FROM users WHERE email = ?`;
+  const checkPasswordQuery = `select * from users where email = 'jimcowens@gmail.com'`;
   connection.query(checkPasswordQuery,[email],(err, results)=>{
-    if(err){console.log('Bad query')};
+    if(err)throw err;
     if(results.length == 0 ){
       res.redirect('/login?msg=noUser');
     }else{
@@ -115,11 +114,11 @@ router.post('/loginProcess',(req, res, next)=>{
 
 router.get('/logout',(req, res, next)=>{
   if (!loggedIn){
-    res.redirect('/?msg=logOutFail')
+    res.redirect('/?msg=logoutFail')
   }
   req.session.destroy();
   loggedIn = false;
-  res.redirect('/?msg=logOutSuccess')
+  res.redirect('/?msg=logoutSuccess')
 });
 
 module.exports = router;
