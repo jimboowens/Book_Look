@@ -15,12 +15,10 @@ router.use('*',(req, res, next)=>{
   // console.log("Middleware is working!");
   if(loggedIn){
       // res.locals is the variable that gets sent to the view
-      res.locals.name = req.session.name;
-      res.locals.id = req.session.id;
+      res.locals.id = req.session.uid;
       res.locals.email = req.session.email;
       res.locals.loggedIn = true;
   }else{
-      res.locals.name = "";
       res.locals.id = "";
       res.locals.email = "";
       res.locals.loggedIn = false;
@@ -34,12 +32,16 @@ router.get('/',(req, res, next)=>{
   let msg;
   if(req.query.msg == 'regSuccess'){
     msg = 'You have successfully registered.';
-  }else if(req.query.msg == 'loginSuccess'){
+  }else if (req.query.msg == 'loginSuccess'){
     msg = 'You have successfully logged in.';
   }else if (req.query.msg == 'logOutSuccess'){
     msg = 'You have sucessfully logged out.'
+  }else if (req.query.msg == 'logOutFail'){
+    msg = 'You have not logged in yet.'
+  }else if (req.query.msg == 'badPass'){
+    msg = 'You entered an incorrect password.'
   }
-res.render('index', {});
+res.render('index', {msg});
 });
 
 router.get('/home',(req,res)=>{
@@ -55,6 +57,7 @@ router.get('/register',(req, res)=>{
 });
 
 router.post('/registerProcess',(req, res, next)=>{
+  console.log(req.body);
   const hashedPass = bcrypt.hashSync(req.body.password);
   const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(checkUserQuery,[req.body.email],(err,results)=>{
@@ -65,9 +68,10 @@ router.post('/registerProcess',(req, res, next)=>{
       const insertUserQuery = `INSERT INTO users (user_ID,email,password)
       VALUES
     (default,?,?);`;
-      connection.query(insertUserQuery,[req.body.name, req.body.email, hashedPass],(err2, results2)=>{
+      connection.query(insertUserQuery,[req.body.email, hashedPass],(err2, results2)=>{
       if(err2){throw err2;}
       res.redirect('/?msg=regSuccess');
+      loggedIn = true;
       });
     };
   });
@@ -89,7 +93,7 @@ router.post('/loginProcess',(req, res, next)=>{
   const password = req.body.password;
   const checkPasswordQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(checkPasswordQuery,[email],(err, results)=>{
-    if(err)throw err;
+    if(err){console.log('Bad query')};
     if(results.length == 0 ){
       res.redirect('/login?msg=noUser');
     }else{
@@ -98,9 +102,8 @@ router.post('/loginProcess',(req, res, next)=>{
         res.redirect('/login?msg=badPass');
       }else{
         console.log(results[0].id)
-        req.session.name = results[0].name;
         req.session.email = results[0].email;
-        req.session.uid = results[0].id;
+        req.session.uid = results[0].User_ID;
         req.session.loggedIn = true;
         loggedIn = true;
         res.redirect('/?msg=loginSuccess');
@@ -109,15 +112,14 @@ router.post('/loginProcess',(req, res, next)=>{
   })
 });
 
-router.post('/loginProcess',[],(req,res)=>{
-  res.json(req.params.body)
-})
-
 
 router.get('/logout',(req, res, next)=>{
+  if (!loggedIn){
+    res.redirect('/?msg=logOutFail')
+  }
   req.session.destroy();
   loggedIn = false;
-  res.redirect('/?msg=logoutSuccess')
+  res.redirect('/?msg=logOutSuccess')
 });
 
 module.exports = router;
