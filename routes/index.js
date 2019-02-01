@@ -90,17 +90,16 @@ res.render('login',{msg});
 router.post('/loginProcess',(req, res, next)=>{
   const email = req.body.email;
   const password = req.body.password;
-  const checkPasswordQuery = `select * from users where email = 'jimcowens@gmail.com'`;
+  const checkPasswordQuery = `select * from users where email = ?`;
   connection.query(checkPasswordQuery,[email],(err, results)=>{
     if(err)throw err;
     if(results.length == 0 ){
       res.redirect('/login?msg=noUser');
     }else{
-      const passwordsMatch = bcrypt.compareSync(password,results[0].hash);
+      const passwordsMatch = bcrypt.compareSync(password,results[0].password);
       if(!passwordsMatch){
         res.redirect('/login?msg=badPass');
       }else{
-        console.log(results[0].id)
         req.session.email = results[0].email;
         req.session.uid = results[0].User_ID;
         req.session.loggedIn = true;
