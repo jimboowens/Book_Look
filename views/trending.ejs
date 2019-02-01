@@ -1,0 +1,16 @@
+<%include header%>
+<body>
+<%include navbar%>
+<div class="container">
+        <div class="content-wrapper mt-3">
+         <%json.results.forEach(function(book){%>
+            <%=let isbn = book.isbns[1].isbn10%>
+            <%=let bookinfo = book.book_details[0]%>
+            <%=let lastWeekRank = book.rank_last_week || 'na' %>
+            <%=let weeksOnList = books.weeks_on_list || 'new this week'%>
+         <%})%>
+    <%=//JSON.stringify(json)%>
+    </div>  
+</div>
+</body>
+<%include footer%>
