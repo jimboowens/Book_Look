@@ -11,9 +11,6 @@ const config = require('./config');
 var app = express();
 let helmet = require('helmet')
 app.use (helmet());
-const bcrypt = require('bcrypt-nodejs');
-const expressSession = require('express-session');
-const sessionOptions = config.sessionSecret;
 const mysql = require('mysql');
 let connection = mysql.createConnection(config.db);
 connection.connect()
