@@ -41,6 +41,8 @@ router.get('/',(req, res, next)=>{
     msg = 'You have not logged in yet.'
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
+  }else if (req.query.msg == 'reviewFail'){
+    msg = ''
   }
   res.render('index', {msg});
 });
@@ -95,6 +97,31 @@ router.post('/registerProcess',(req, res, next)=>{
     };
   });
 });
+
+
+// router.get('/review',(req, res)=>{
+//   let msg;
+//   if (!loggedIn){
+//     msg = 'If you want to review a book, you must first log in.';
+//   } else {
+//     // if(req.query.msg == 'review'){
+//       msg = 'Enter a new book to review.';
+//       res.render('review',{msg})
+//     // }
+//   }
+// });
+
+
+router.get('/review',(req, res)=>{
+  let msg;
+  msg = "Write a review!";
+  res.render('review',{msg});
+})
+
+
+router.post('/reviewProcess', (req,res,next)=>{
+
+})
 
 
 router.get('/login', (req, res, next)=>{
