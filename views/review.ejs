@@ -1,0 +1,45 @@
+<%include header%>
+<body>
+<%include navbar%>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+            <div class="content-wrapper m-3 p-5">
+                <h1>Review</h1>
+                <%- msg%>
+                <form action="/reviewProcess" method="post">
+                    <div class="form-group-one">
+                        <label for="bookTitle">Book Title:</label>
+                        <input type="email" class="form-control" name="email">
+                        <label for="author">Author:</label>
+                        <input type="password" class="form-control" name="password">
+                        <label for="isbn">ISBN:</label>
+                        <input type="password" class="form-control" name="password">
+                        <div class="ratingDiv">
+                            <a class="like"><i class="fa fa-thumbs-o-up"></i>  
+                                Like <input class="qty1" name="qty1" readonly="readonly" type="text" value="0" />
+                            </a>
+                            <a class="dislike"><i class="fa fa-thumbs-o-down"></i> 
+                                Dislike <input class="qty2"  name="qty2" readonly="readonly" type="text" value="0" />
+                            </a>
+                        </div>
+                        <div class="dropdown">
+                            <button onclick="genreDropdown()" class="dropbtn my-1">Genre</button>
+                            <div id="my-genre-dropdown" class="dropdown-content">
+                                <a href="action">Action</a>
+                                <a href="romance">Romance</a>
+                                <a href="biography">Biography</a>
+                            </div>
+                        </div>
+                        <div class="submitDiv">
+                            <button class="btn btn-primary">Submit!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%%>
+</div>
+</body>
+<%include footer%>
