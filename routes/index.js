@@ -50,7 +50,7 @@ router.get('/',(req, res, next)=>{
 router.get('/trending', (req,res)=>{
   let url = `https://api.nytimes.com/svc/books/v3/lists.json?list-name=`;
 
-  fetch(`${url}hardcover-fiction&api-key=${config.apiKey}`, {
+  fetch(`${url}hardcover-fiction&api-key=${config.nytApiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
@@ -66,6 +66,18 @@ router.get('/home',(req,res)=>{
 router.get('/about',(req,res)=>{
   let msg;
   res.render('about', {msg});
+  
+});
+
+router.get('/contactUs',(req,res)=>{
+  let msg;
+  res.render('contactUs', {msg});
+  
+});
+
+router.get('/myBookList',(req,res)=>{
+  let msg;
+  res.render('myBookList', {msg});
   
 });
 
