@@ -47,10 +47,11 @@ router.get('/',(req, res, next)=>{
   res.render('index', {msg});
 });
 
-router.get('/trending', (req,res)=>{
-  let url = `https://api.nytimes.com/svc/books/v3/lists.json?list-name=`;
+router.get('/trending', (req,res)=>{  
 
-  fetch(`${url}hardcover-fiction&api-key=${config.nytApiKey}`, {
+let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=`;
+// https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=ndA72R1EIfGvSDeT6XhKwTn7G6EaOVzV  
+fetch(`${url}${config.nytApiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })

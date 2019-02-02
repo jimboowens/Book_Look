@@ -4,10 +4,11 @@
 <div class="container">
         <div class="content-wrapper mt-3">
         <%let i=0%>
-        <% json.results.forEach((book)=>{ %>
+        <% json.results.books.[0].forEach((book)=>{ %>
             <%i++%>
             <div class="col-sm">
                 <h1>Book rank: <%=i%></h1>
+                <p clas="book-info"><%book.book_image%></p>
                 <p class="book-info"> title - <%= book.book_details[0].title %></p>
                 <p class="book-info">rank last week - <%= book.rank_last_week || 'na' %></p>
                 <p class="book-info">weeks on list - <%= book.weeks_on_list || 'new this week'%></p>
@@ -16,7 +17,7 @@
                 <a href ="<%=book.amazon_product_url%>" target="_blank">Link to <%=book.book_details[0].title%>'s product page</a>
         </div>
         <% }) %>
-    <!-- <%=//JSON.stringify(json)%> -->
+    <%=//JSON.stringify(json)%>
     </div>  
 </div>
 </body>
