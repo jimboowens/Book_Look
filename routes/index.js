@@ -12,6 +12,7 @@ const fetch = require('node-fetch');
 router.use(expressSession(sessionOptions));
 connection.connect()
 
+
 router.use('*',(req, res, next)=>{
   // console.log("Middleware is working!");
   if(loggedIn){
@@ -41,8 +42,10 @@ router.get('/',(req, res, next)=>{
     msg = 'You have not logged in yet.'
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
+  }else if (req.query.msg == 'reviewSuccess'){
+    msg = 'Thank you for your review!'
   }else if (req.query.msg == 'reviewFail'){
-    msg = ''
+    msg = 'Hmmm, your review did not go through...'
   }
   res.render('index', {msg});
 });
@@ -114,13 +117,58 @@ router.post('/registerProcess',(req, res, next)=>{
 
 router.get('/review',(req, res)=>{
   let msg;
+  let genresArray = [
+    'Action',
+    'Comedy',
+    'Romance',
+    'Biography',
+    'Childrens',
+    'Fantasy',
+    'Mystery',
+    'Self Help',
+    'Adventure',
+    'Business'
+  ];
   msg = "Write a review!";
-  res.render('review',{msg});
+  res.render('review',{msg, genresArray});
 })
 
 
 router.post('/reviewProcess', (req,res,next)=>{
+  const title = req.body.title;
+  const author = req.body.author;
+  const isbn = req.body.isbn;
+  const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
+  let rating = 0;
+  document.getElementById('likeButton').addEventListener("click", ()=>{
+    rating = 1;
+    console.log(rating);
+  });
+  document.getElementById('dislikeButton').addEventListener("click", ()=>{
+    rating = -1;
+    console.log(rating);
+  });
+  connection.query(checkIsbnQuery,[isbn],(err,results)=>{
+    if(err)throw err;
+    if(results.length == 0 ){
+      const insertIsbnQuery = `INSERT INTO books (Book_Title,Book_Author,ISBN)
+      VALUES
+      (?,?,?);`;
+      connection.query(insertIsbnQuery,[title,author,isbn],(err2, results2)=>{
+        if(err2){throw err2};
+      })
+      
 
+    }else{
+      const insertReviewOnlyQuery = `INSERT INTO ratings (User_ID,ISBN,Book_Rating)
+      VALUES
+      (?,?,?);`;
+      connection.query(insertReviewOnlyQuery,[user,isbn,rating],(err3, results3)=>{
+        if(err2){throw err2};
+      })
+    }
+    res.redirect('/?msg=reviewSuccess');
+  })
 })
 
 

@@ -10,25 +10,27 @@
                 <form action="/reviewProcess" method="post">
                     <div class="form-group-one">
                         <label for="bookTitle">Book Title:</label>
-                        <input type="email" class="form-control" name="email">
+                        <input type="text" class="form-control" name="title">
                         <label for="author">Author:</label>
-                        <input type="password" class="form-control" name="password">
+                        <input type="text" class="form-control" name="author">
                         <label for="isbn">ISBN:</label>
-                        <input type="password" class="form-control" name="password">
+                        <input type="text" class="form-control" name="isbn">
                         <div class="ratingDiv">
-                            <a class="like"><i class="fa fa-thumbs-o-up"></i>  
-                                Like <input class="qty1" name="qty1" readonly="readonly" type="text" value="0" />
+                            <div>Rating:</div>
+                            <a class="like" ><i class="fa fa-thumbs-o-up"></i>  
+                                Like <input id="likeButton" class="qty1" name="qty1" readonly="readonly" type="text" value="0" />
                             </a>
                             <a class="dislike"><i class="fa fa-thumbs-o-down"></i> 
-                                Dislike <input class="qty2"  name="qty2" readonly="readonly" type="text" value="0" />
+                                Dislike <input id="dislikeButton" class="qty2"  name="qty2" readonly="readonly" type="text" value="0" />
                             </a>
                         </div>
                         <div class="dropdown">
-                            <button onclick="genreDropdown()" class="dropbtn my-1">Genre</button>
+                            <div>Genre:</div>
+                            <button onclick="genreDropdown()" class="dropbtn my-1">Select One</button>
                             <div id="my-genre-dropdown" class="dropdown-content">
-                                <a href="action">Action</a>
-                                <a href="romance">Romance</a>
-                                <a href="biography">Biography</a>
+                                <% for(let i = 0; i<genresArray.length; i++) { %>
+                                <a href="genres"><%- genresArray[i] %></a>
+                                <% } %>
                             </div>
                         </div>
                         <div class="submitDiv">

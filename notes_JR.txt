@@ -1,0 +1,13 @@
+make the submit button work
+    -if ISBN already exists then just enter the rating, store the rest of the data 
+        in a misc table (never know when you might want it)
+    -if ISBN does not exist then enter author, title, genre, rating in the DB
+    -make sure they log in before reviewing
+
+
+
+
+fix the spinning problem on the genre drop down
+stop the ratings from being more than 1
+limit character inputs
+make the selected Genre appear and stay there
