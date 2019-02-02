@@ -6,7 +6,7 @@ const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
 const mysql = require('mysql');
 const connection = mysql.createConnection(config.db);
-const loggedIn = false;
+let loggedIn = false;
 const fetch = require('node-fetch');
 
 router.use(expressSession(sessionOptions));
@@ -60,6 +60,11 @@ router.get('/trending', (req,res)=>{
 
 router.get('/home',(req,res)=>{
   res.redirect('/');
+});
+router.get('/about',(req,res)=>{
+  let msg;
+  res.render('about', {msg});
+  
 });
 
 router.get('/register',(req, res)=>{
