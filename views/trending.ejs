@@ -3,16 +3,20 @@
 <%include navbar%>
 <div class="container">
         <div class="content-wrapper mt-3">
-         <% json.results.forEach((book)=>{ %>
-            <div class="col-sm-3">
-                <p><%= book.isbns[0].isbn10 %></p>
-                <p><%= book.book_details[0].title %></p>
-                <p><%= book.rank_last_week || 'na' %></p>
-                <p><%= book.weeks_on_list || 'new this week'%></p>
-                <p><%book.book_details.image%></p>
+        <%let i=0%>
+        <% json.results.forEach((book)=>{ %>
+            <%i++%>
+            <div class="col-sm">
+                <h1>Book rank: <%=i%></h1>
+                <p class="book-info"> title - <%= book.book_details[0].title %></p>
+                <p class="book-info">rank last week - <%= book.rank_last_week || 'na' %></p>
+                <p class="book-info">weeks on list - <%= book.weeks_on_list || 'new this week'%></p>
+                <p class="book-info">short synopsis - <%=book.book_details[0].description%></p>
+                <p class="book-info">isbn - <%= book.isbns[0].isbn10 %></p>
+                <a href ="<%=book.amazon_product_url%>" target="_blank">Link to <%=book.book_details[0].title%>'s product page</a>
         </div>
-         <% }) %>
-    <%=JSON.stringify(json)%>
+        <% }) %>
+    <!-- <%=//JSON.stringify(json)%> -->
     </div>  
 </div>
 </body>
