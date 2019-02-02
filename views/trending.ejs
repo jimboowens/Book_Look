@@ -3,13 +3,16 @@
 <%include navbar%>
 <div class="container">
         <div class="content-wrapper mt-3">
-         <%json.results.forEach(function(book){%>
-            <%=let isbn = book.isbns[1].isbn10%>
-            <%=let bookinfo = book.book_details[0]%>
-            <%=let lastWeekRank = book.rank_last_week || 'na' %>
-            <%=let weeksOnList = books.weeks_on_list || 'new this week'%>
-         <%})%>
-    <%=//JSON.stringify(json)%>
+         <% json.results.forEach((book)=>{ %>
+            <div class="col-sm-3">
+                <p><%= book.isbns[0].isbn10 %></p>
+                <p><%= book.book_details[0].title %></p>
+                <p><%= book.rank_last_week || 'na' %></p>
+                <p><%= book.weeks_on_list || 'new this week'%></p>
+                <p><%book.book_details.image%></p>
+        </div>
+         <% }) %>
+    <%=JSON.stringify(json)%>
     </div>  
 </div>
 </body>
