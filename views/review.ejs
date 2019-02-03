@@ -15,14 +15,17 @@
                         <input type="text" class="form-control" name="author">
                         <label for="isbn">ISBN:</label>
                         <input type="text" class="form-control" name="isbn">
-                        <div class="ratingDiv">
-                            <div>Rating:</div>
-                            <a class="like" ><i class="fa fa-thumbs-o-up"></i>  
-                                Like <input id="likeButton" class="qty1" name="qty1" readonly="readonly" type="text" value="0" />
-                            </a>
-                            <a class="dislike"><i class="fa fa-thumbs-o-down"></i> 
-                                Dislike <input id="dislikeButton" class="qty2"  name="qty2" readonly="readonly" type="text" value="0" />
-                            </a>
+                        <div class="form-check">
+                            <input class="form-check-input likeClass" type="radio" name="reviewRadios" id="likeId" value="option1">
+                            <label class="form-check-label" for="likeRadio">
+                              Like
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input dislikeClass" type="radio" name="reviewRadios" id="dislikeId" value="option2">
+                            <label class="form-check-label" for="dislikeRadio">
+                              Dislike
+                            </label>
                         </div>
                         <div class="dropdown">
                             <div>Genre:</div>
@@ -33,6 +36,16 @@
                                 <% } %>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Genre:</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                          </div>
                         <div class="submitDiv">
                             <button class="btn btn-primary">Submit!</button>
                         </div>
