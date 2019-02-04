@@ -52,8 +52,7 @@ res.render('index', {msg});
 
 
 router.get('/trending', (req,res)=>{  
-  let choice = false
-  console.log(res)
+  let choice = false;
   res.render('trending', {choice}); 
 })
 
@@ -131,7 +130,6 @@ router.get('/review',(req, res)=>{
   msg = "Write a review!";
   res.render('review',{msg, genresArray});
 });
-
 
 router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
