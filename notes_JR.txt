@@ -14,3 +14,36 @@ limit character inputs
 make the selected Genre appear and stay there
 
 type name  for
+
+error handler if duplicate review entered
+
+login with user or email (one box to accept either)
+make them pick a genre
+dont let them leave anything blank
+
+
+
+ <!-- <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <button class="dropdown-item" type="button">Action</button>
+                                <button class="dropdown-item" type="button">Another action</button>
+                                <button class="dropdown-item" type="button">Something else here</button>
+                            </div>
+                            </div> -->
+
+
+
+                            <div class="dropdown">
+                            <div>Genre:</div>
+                            <a onclick="genreDropdown()" class="dropbtn my-1">
+                                Select One
+                            </a>
+                            <div id="my-genre-dropdown" class="dropdown-content">
+                                <% for(let i = 0; i<genresArray.length; i++) { %>
+                                <option href="genres"><%- genresArray[i] %></option>
+                                <% } %>
+                            </div>
+                        </div>
