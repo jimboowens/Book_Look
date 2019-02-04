@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const config = require('../config');
 const bcrypt = require('bcrypt-nodejs');
+const fetch = require('node-fetch')
 const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
 router.use(expressSession(sessionOptions))
@@ -51,21 +52,32 @@ res.render('index', {msg});
 
 
 router.get('/trending', (req,res)=>{  
+  let choice = false
+  console.log(res)
+  res.render('trending', {choice}); 
+})
 
-let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key`;
-// https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=ndA72R1EIfGvSDeT6XhKwTn7G6EaOVzV  
+router.get('trending/:id', (req,res)=>{
+  console.log('got it')
+  const id = req.params.id;
+  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
+//           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
 fetch(`${url}=${config.nytApiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
     // console.log(json)
-    res.render('trending', {json}); 
+    res.render('trending/:id', {json, msg}); 
   });
 })
 
 router.get('/home',(req,res)=>{
   res.redirect('/');
+});
+
+router.get('/about',(req,res)=>{
+  res.render('about', {});
 });
 
 router.get('/register',(req, res)=>{
