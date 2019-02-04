@@ -56,20 +56,54 @@ router.get('/trending', (req,res)=>{
   res.render('trending', {choice}); 
 })
 
-router.get('/trending/:id', (req,res)=>{
-  console.log('got it')
-  console.log(req.params.name)
-  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${req.params.id}.json?api-key`;
+
+router.get('/trending/:id', (req,res, next)=>{
+  let msg;
+  choice = true;
+  const id = req.params.id;
+  console.log(req.params.id)
+  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
 //           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
 fetch(`${url}=${config.apiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
+    json.results.books.forEach((book)=>{
+      const ISBN = book.primary_isbn10;
+      const title=book.title;
+      const author=book.author;
+      const publisher= book.publisher; 
+      const image=book.book_image;
+      const image2=book.book_image;
+      const image3=book.book_image;
+      const inputQuery = 'select * from books where isbn = ?;';
+      // console.log(ISBN,title,author,yearOfPublication,publisher,image)
+      connection.query(inputQuery,[ISBN],(err,results)=>{
+        if (err) throw err;
+        if (results.length == 0){
+          const insertQuery =  `insert into books (ISBN,Book_Title, Book_Author, Year_of_Publication, publisher, Image_URL_S, Image_URL_M, Image_URL_L)
+                                    values (?,?,?,null,?,?,?,?);`;
+          connection.query(insertQuery, [
+            ISBN,
+            title,
+            author,
+            null,
+            publisher,
+            image,
+            image2,
+            image3
+          ],(err,results)=>{
+            if (err) throw err;
+          });
+        };
+      });
+    });
     // console.log(json)
-    let choice = true;
-    res.render('trending', {json, choice}); 
+  let choice = true;
+    res.render('trending', {json,choice, msg}); 
   });
+  // choice = false;
 })
 
 router.get('/home',(req,res)=>{
