@@ -37,12 +37,15 @@ window.onclick = function(event) {
 
 
 $(function rating() {
-    $(".like").click(function () {
-        var input = $(this).find('.qty1');
+    let userLiked = 1;
+    $("#likeId").click(function () {
+        var input = $(this).find('.likeClass');
         input.val(parseInt(input.val())+ 1);
+        userLiked = 1;
     });
-    $(".dislike").click(function () {
-        var input = $(this).find('.qty2');
+    $("#dislikeId").click(function () {
+        var input = $(this).find('.dislikeClass');
         input.val(input.val() - 1);
+        userLiked = 0;
     });
 });

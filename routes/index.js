@@ -1,16 +1,14 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
 const config = require('../config');
 const bcrypt = require('bcrypt-nodejs');
 const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
+router.use(expressSession(sessionOptions))
 const mysql = require('mysql');
-const connection = mysql.createConnection(config.db);
-let loggedIn = false;
-const fetch = require('node-fetch');
-
-router.use(expressSession(sessionOptions));
+let connection = mysql.createConnection(config.db);
 connection.connect()
+let loggedIn = false;
 
 
 router.use('*',(req, res, next)=>{
@@ -24,7 +22,7 @@ router.use('*',(req, res, next)=>{
       res.locals.id = "";
       res.locals.email = "";
       res.locals.loggedIn = false;
-      // loggedIn = false;
+      loggedIn = false;
   }
   next();
 });
@@ -47,8 +45,9 @@ router.get('/',(req, res, next)=>{
   }else if (req.query.msg == 'reviewFail'){
     msg = 'Hmmm, your review did not go through...'
   }
-  res.render('index', {msg});
+res.render('index', {msg});
 });
+
 
 router.get('/trending', (req,res)=>{  
 
@@ -66,23 +65,6 @@ fetch(`${url}=${config.nytApiKey}`, {
 
 router.get('/home',(req,res)=>{
   res.redirect('/');
-});
-router.get('/about',(req,res)=>{
-  let msg;
-  res.render('about', {msg});
-  
-});
-
-router.get('/contactUs',(req,res)=>{
-  let msg;
-  res.render('contactUs', {msg});
-  
-});
-
-router.get('/myBookList',(req,res)=>{
-  let msg;
-  res.render('myBookList', {msg});
-  
 });
 
 router.get('/register',(req, res)=>{
@@ -115,19 +97,6 @@ router.post('/registerProcess',(req, res, next)=>{
 });
 
 
-// router.get('/review',(req, res)=>{
-//   let msg;
-//   if (!loggedIn){
-//     msg = 'If you want to review a book, you must first log in.';
-//   } else {
-//     // if(req.query.msg == 'review'){
-//       msg = 'Enter a new book to review.';
-//       res.render('review',{msg})
-//     // }
-//   }
-// });
-
-
 router.get('/review',(req, res)=>{
   let msg;
   let genresArray = [
@@ -151,16 +120,12 @@ router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
   const author = req.body.author;
   const isbn = req.body.isbn;
+  const rating = req.body.reviewRadios;
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
-  let rating = 0;
-  document.getElementById('likeButton').addEventListener("click", ()=>{
-    rating = 1;
-    console.log(rating);
-  });
-  document.getElementById('dislikeButton').addEventListener("click", ()=>{
-    rating = -1;
-    console.log(rating);
-  });
+  const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
+      VALUES
+      (default,?,?);`;
+  
   connection.query(checkIsbnQuery,[isbn],(err,results)=>{
     if(err)throw err;
     if(results.length == 0 ){
@@ -170,14 +135,18 @@ router.post('/reviewProcess', (req,res,next)=>{
       connection.query(insertIsbnQuery,[title,author,isbn],(err2, results2)=>{
         if(err2){throw err2};
       })
-      
-
+      connection.query(insertReviewQuery,[rating,isbn],(err3, results3)=>{
+        if(err3){throw err3};
+      })
     }else{
-      const insertReviewOnlyQuery = `INSERT INTO ratings (User_ID,ISBN,Book_Rating)
-      VALUES
-      (?,?,?);`;
-      connection.query(insertReviewOnlyQuery,[user,isbn,rating],(err3, results3)=>{
-        if(err2){throw err2};
+      const insertDuplicateBookQuery = `INSERT INTO duplicate_books (ISBN,Book_Title,Book_Author)
+        VALUES
+        (?,?,?);`;
+      connection.query(insertDuplicateBookQuery,[isbn,title,author],(err4, results4)=>{
+        if(err4){throw err4};
+      })
+      connection.query(insertReviewQuery,[rating,isbn],(err5, results5)=>{
+        if(err5){throw err5};
       })
     }
     res.redirect('/?msg=reviewSuccess');
