@@ -76,29 +76,35 @@ router.get('/register',(req, res)=>{
   let msg;
   if(req.query.msg == 'register'){
     msg = 'This email adress is already registered.';
+  }else if(req.query.msg == 'badPass'){
+    msg = 'Your password must be at least 8 characters long'
   }
   res.render('register',{msg})
 });
 
 router.post('/registerProcess',(req, res, next)=>{
   console.log(req.body);
-  const hashedPass = bcrypt.hashSync(req.body.password);
-  const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
-  connection.query(checkUserQuery,[req.body.email],(err,results)=>{
-    if(err)throw err;
-    if(results.length != 0){
-      res.redirect('/register?msg=register');
-    }else{
-      const insertUserQuery = `INSERT INTO users (user_ID,email,password)
-      VALUES
-    (default,?,?);`;
-      connection.query(insertUserQuery,[req.body.email, hashedPass],(err2, results2)=>{
-      if(err2){throw err2;}
-      res.redirect('/?msg=regSuccess');
-      loggedIn = true;
-      });
-    };
-  });
+  // if(req.body.password.length < 8){
+  //   res.redirect('/register?msg=badPass')
+  // }else{
+    const hashedPass = bcrypt.hashSync(req.body.password);
+    const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
+    connection.query(checkUserQuery,[req.body.email],(err,results)=>{
+      if(err)throw err;
+      if(results.length != 0){
+        res.redirect('/register?msg=register');
+      }else{
+        const insertUserQuery = `INSERT INTO users (user_ID,email,password)
+        VALUES
+      (default,?,?);`;
+        connection.query(insertUserQuery,[req.body.email, hashedPass],(err2, results2)=>{
+        if(err2){throw err2;}
+        res.redirect('/?msg=regSuccess');
+        loggedIn = true;
+        });
+      };
+    });
+  // }
 });
 
 
