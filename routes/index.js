@@ -56,18 +56,19 @@ router.get('/trending', (req,res)=>{
   res.render('trending', {choice}); 
 })
 
-router.get('trending/:id', (req,res)=>{
+router.get('/trending/:id', (req,res)=>{
   console.log('got it')
-  const id = req.params.id;
-  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
+  console.log(req.params.name)
+  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${req.params.id}.json?api-key`;
 //           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
-fetch(`${url}=${config.nytApiKey}`, {
+fetch(`${url}=${config.apiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
     // console.log(json)
-    res.render('trending/:id', {json, msg}); 
+    let choice = true;
+    res.render('trending', {json, choice}); 
   });
 })
 
