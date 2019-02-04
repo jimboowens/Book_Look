@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const config = require('../config');
 const bcrypt = require('bcrypt-nodejs');
+const fetch = require('node-fetch')
 const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
 router.use(expressSession(sessionOptions))
@@ -51,16 +52,22 @@ res.render('index', {msg});
 
 
 router.get('/trending', (req,res)=>{  
+  let choice = false;
+  res.render('trending', {choice}); 
+})
 
-let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key`;
-// https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=ndA72R1EIfGvSDeT6XhKwTn7G6EaOVzV  
+router.get('trending/:id', (req,res)=>{
+  console.log('got it')
+  const id = req.params.id;
+  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
+//           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
 fetch(`${url}=${config.nytApiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
     // console.log(json)
-    res.render('trending', {json}); 
+    res.render('trending/:id', {json, msg}); 
   });
 })
 
@@ -71,6 +78,10 @@ router.get('/home',(req,res)=>{
 router.get('/contactUs', (req,res,next)=>{
   res.render('contactUs');
 })
+
+router.get('/about',(req,res)=>{
+  res.render('about', {});
+});
 
 router.get('/register',(req, res)=>{
   let msg;
@@ -124,39 +135,41 @@ router.get('/review',(req, res)=>{
   ];
   msg = "Write a review!";
   res.render('review',{msg, genresArray});
-})
-
+});
 
 router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
   const author = req.body.author;
   const isbn = req.body.isbn;
-  const rating = req.body.reviewRadios;
+  const rating = Number(req.body.reviewRadios);
+  const genre = req.body.testGenre;
+  const uid = req.session.uid;
+  console.log(uid);
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
   const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
       VALUES
-      (default,?,?);`;
+      (?,?,?);`;
   
   connection.query(checkIsbnQuery,[isbn],(err,results)=>{
     if(err)throw err;
     if(results.length == 0 ){
-      const insertIsbnQuery = `INSERT INTO books (Book_Title,Book_Author,ISBN)
+      const insertIsbnQuery = `INSERT INTO books (Book_Title,Book_Author,ISBN,Genre)
       VALUES
-      (?,?,?);`;
-      connection.query(insertIsbnQuery,[title,author,isbn],(err2, results2)=>{
+      (?,?,?,?);`;
+      connection.query(insertIsbnQuery,[title,author,isbn,genre],(err2, results2)=>{
         if(err2){throw err2};
       })
-      connection.query(insertReviewQuery,[rating,isbn],(err3, results3)=>{
+      connection.query(insertReviewQuery,[uid,rating,isbn],(err3, results3)=>{
         if(err3){throw err3};
       })
     }else{
-      const insertDuplicateBookQuery = `INSERT INTO duplicate_books (ISBN,Book_Title,Book_Author)
+      const insertDuplicateBookQuery = `INSERT INTO duplicate_books (ISBN,Book_Title,Book_Author,Genre)
         VALUES
-        (?,?,?);`;
-      connection.query(insertDuplicateBookQuery,[isbn,title,author],(err4, results4)=>{
+        (?,?,?,?);`;
+      connection.query(insertDuplicateBookQuery,[isbn,title,author,genre],(err4, results4)=>{
         if(err4){throw err4};
       })
-      connection.query(insertReviewQuery,[rating,isbn],(err5, results5)=>{
+      connection.query(insertReviewQuery,[uid,rating,isbn],(err5, results5)=>{
         if(err5){throw err5};
       })
     }

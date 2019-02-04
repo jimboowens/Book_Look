@@ -120,10 +120,14 @@ body {
   width: 32px;
 }
 
-
 .profilePic{
   width: 232px;
   height: 232px;
   border-radius: 50%;
+  margin: 15px;
+}
+
+.bestSellers{
+  display:flex;
   margin: 15px;
 }
