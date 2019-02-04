@@ -68,6 +68,10 @@ router.get('/home',(req,res)=>{
   res.redirect('/');
 });
 
+router.get('/contactUs', (req,res,next)=>{
+  res.render('contactUs');
+})
+
 router.get('/register',(req, res)=>{
   let msg;
   if(req.query.msg == 'register'){
