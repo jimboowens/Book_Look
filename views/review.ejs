@@ -16,13 +16,13 @@
                         <label for="isbn">ISBN:</label>
                         <input type="text" class="form-control" name="isbn">
                         <div class="form-check">
-                            <input class="form-check-input likeClass" type="radio" name="reviewRadios" id="likeId" value="option1">
+                            <input class="form-check-input likeClass" type="radio" name="reviewRadios" id="likeId" value="1">
                             <label class="form-check-label" for="likeRadio">
                               Like
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input dislikeClass" type="radio" name="reviewRadios" id="dislikeId" value="option2">
+                            <input class="form-check-input dislikeClass" type="radio" name="reviewRadios" id="dislikeId" value="0">
                             <label class="form-check-label" for="dislikeRadio">
                               Dislike
                             </label>
@@ -42,7 +42,7 @@
                             <label for="exampleFormControlSelect1">Genre:</label>
                             <select class="form-control" id="exampleFormControlSelect1">
                                 <% for(let i = 0; i<genresArray.length; i++) { %>
-                                <option href="genres"><%- genresArray[i] %></option>
+                                <option href="genres" name="testGenre"><%- genresArray[i] %></option>
                                 <% } %>
                             </select>
                         </div>
