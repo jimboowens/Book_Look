@@ -17,10 +17,12 @@ router.use('*',(req, res, next)=>{
   if(loggedIn){
       // res.locals is the variable that gets sent to the view
       res.locals.id = req.session.uid;
+      res.locals.userName = req.session.userName;
       res.locals.email = req.session.email;
       res.locals.loggedIn = true;
   }else{
       res.locals.id = "";
+      res.locals.userName = "";
       res.locals.email = "";
       res.locals.loggedIn = false;
       loggedIn = false;
@@ -33,9 +35,9 @@ router.get('/',(req, res, next)=>{
   // set up message to communicate with user across pages
   let msg;
   if(req.query.msg == 'regSuccess'){
-    msg = 'You have successfully registered.';
+    msg = `Welcome ${req.session.userName}! You have successfully registered.`;
   }else if (req.query.msg == 'loginSuccess'){
-    msg = 'You have successfully logged in.';
+    msg = `Hi ${req.session.userName}! You have successfully logged in.`;
   }else if (req.query.msg == 'logoutSuccess'){
     msg = 'You have sucessfully logged out.'
   }else if (req.query.msg == 'logoutFail'){
@@ -43,33 +45,67 @@ router.get('/',(req, res, next)=>{
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
   }else if (req.query.msg == 'reviewSuccess'){
-    msg = 'Thank you for your review!'
+    msg = `Thank you for your review ${req.session.userName}!`
   }else if (req.query.msg == 'reviewFail'){
-    msg = 'Hmmm, your review did not go through...'
+    msg = `Hmmm, ${req.session.userName} your review did not go through...`
   }
 res.render('index', {msg});
 });
 
 
 router.get('/trending', (req,res)=>{  
-  let choice = false
-  console.log(res)
+  let choice = false;
   res.render('trending', {choice}); 
 })
 
-router.get('trending/:id', (req,res)=>{
-  console.log('got it')
+
+router.get('/trending/:id', (req,res, next)=>{
+  let msg;
+  choice = true;
   const id = req.params.id;
+  console.log(req.params.id)
   let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
 //           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
-fetch(`${url}=${config.nytApiKey}`, {
+fetch(`${url}=${config.apiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
+    // console.log(JSON.stringify(json))
+    json.results.books.forEach((book)=>{
+      const ISBN = book.primary_isbn10;
+      const title=book.title;
+      const author=book.author;
+      const publisher= book.publisher; 
+      const image=book.book_image;
+      const image2=book.book_image;
+      const image3=book.book_image;
+      const inputQuery = 'select * from books where isbn = ?;';
+      // console.log(ISBN,title,author,yearOfPublication,publisher,image)
+      connection.query(inputQuery,[ISBN],(err,results)=>{
+        if (err) throw err;
+        if (results.length == 0){
+          const insertQuery =  `insert into books (ISBN,Book_Title, Book_Author, Year_of_Publication, publisher, Image_URL_S, Image_URL_M, Image_URL_L)
+                                    values (?,?,?,null,?,?,?,?);`;
+          connection.query(insertQuery, [
+            ISBN,
+            title,
+            author,
+            publisher,
+            image,
+            image2,
+            image3
+          ],(err,results)=>{
+            if (err) throw err;
+          });
+        };
+      });
+    });
     // console.log(json)
-    res.render('trending/:id', {json, msg}); 
+  let choice = true;
+    res.render('trending', {json,choice, msg}); 
   });
+  // choice = false;
 })
 
 router.get('/home',(req,res)=>{
@@ -88,6 +124,8 @@ router.get('/register',(req, res)=>{
   let msg;
   if(req.query.msg == 'register'){
     msg = 'This email adress is already registered.';
+  }else if(req.query.msg == 'badPass'){
+    msg = 'Your password must be at least 8 characters long'
   }
   res.render('register',{msg})
 });
@@ -101,11 +139,15 @@ router.post('/registerProcess',(req, res, next)=>{
     if(results.length != 0){
       res.redirect('/register?msg=register');
     }else{
-      const insertUserQuery = `INSERT INTO users (user_ID,email,password)
+      const insertUserQuery = `INSERT INTO users (User_ID,email,password,User_Name)
       VALUES
-    (default,?,?);`;
-      connection.query(insertUserQuery,[req.body.email, hashedPass],(err2, results2)=>{
+    (default,?,?,?);`;
+      connection.query(insertUserQuery,[req.body.email, hashedPass, req.body.userName],(err2, results2)=>{
       if(err2){throw err2;}
+      req.session.email = req.body.email;
+      req.session.userName = req.body.userName;
+      req.session.uid = results2.insertId;
+      req.session.loggedIn = true;
       res.redirect('/?msg=regSuccess');
       loggedIn = true;
       });
@@ -113,10 +155,10 @@ router.post('/registerProcess',(req, res, next)=>{
   });
 });
 
-
 router.get('/review',(req, res)=>{
   let msg;
   let genresArray = [
+    'Select a Genre',
     'Action',
     'Comedy',
     'Romance',
@@ -132,15 +174,14 @@ router.get('/review',(req, res)=>{
   res.render('review',{msg, genresArray});
 });
 
-
 router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
   const author = req.body.author;
   const isbn = req.body.isbn;
   const rating = Number(req.body.reviewRadios);
-  const genre = req.body.testGenre;
+  const genre = req.body.nameGenreSelect;
   const uid = req.session.uid;
-  console.log(uid);
+
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
   const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
       VALUES
@@ -199,6 +240,7 @@ router.post('/loginProcess',(req, res, next)=>{
       }else{
         req.session.email = results[0].email;
         req.session.uid = results[0].User_ID;
+        req.session.userName = results[0].User_Name;
         req.session.loggedIn = true;
         loggedIn = true;
         res.redirect('/?msg=loginSuccess');
