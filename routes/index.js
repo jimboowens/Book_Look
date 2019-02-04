@@ -71,6 +71,7 @@ fetch(`${url}=${config.apiKey}`, {
   })
   .then(response => { return response.json(); })
   .then(json => { 
+    // console.log(JSON.stringify(json))
     json.results.books.forEach((book)=>{
       const ISBN = book.primary_isbn10;
       const title=book.title;
@@ -90,7 +91,6 @@ fetch(`${url}=${config.apiKey}`, {
             ISBN,
             title,
             author,
-            null,
             publisher,
             image,
             image2,
