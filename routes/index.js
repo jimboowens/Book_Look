@@ -17,10 +17,12 @@ router.use('*',(req, res, next)=>{
   if(loggedIn){
       // res.locals is the variable that gets sent to the view
       res.locals.id = req.session.uid;
+      res.locals.userName = req.session.userName;
       res.locals.email = req.session.email;
       res.locals.loggedIn = true;
   }else{
       res.locals.id = "";
+      res.locals.userName = "";
       res.locals.email = "";
       res.locals.loggedIn = false;
       loggedIn = false;
@@ -33,9 +35,9 @@ router.get('/',(req, res, next)=>{
   // set up message to communicate with user across pages
   let msg;
   if(req.query.msg == 'regSuccess'){
-    msg = 'You have successfully registered.';
+    msg = `Welcome ${req.session.userName}! You have successfully registered.`;
   }else if (req.query.msg == 'loginSuccess'){
-    msg = 'You have successfully logged in.';
+    msg = `Hi ${req.session.userName}! You have successfully logged in.`;
   }else if (req.query.msg == 'logoutSuccess'){
     msg = 'You have sucessfully logged out.'
   }else if (req.query.msg == 'logoutFail'){
@@ -43,9 +45,9 @@ router.get('/',(req, res, next)=>{
   }else if (req.query.msg == 'badPass'){
     msg = 'You entered an incorrect password.'
   }else if (req.query.msg == 'reviewSuccess'){
-    msg = 'Thank you for your review!'
+    msg = `Thank you for your review ${req.session.userName}!`
   }else if (req.query.msg == 'reviewFail'){
-    msg = 'Hmmm, your review did not go through...'
+    msg = `Hmmm, ${req.session.userName} your review did not go through...`
   }
 res.render('index', {msg});
 });
@@ -130,33 +132,33 @@ router.get('/register',(req, res)=>{
 
 router.post('/registerProcess',(req, res, next)=>{
   console.log(req.body);
-  // if(req.body.password.length < 8){
-  //   res.redirect('/register?msg=badPass')
-  // }else{
-    const hashedPass = bcrypt.hashSync(req.body.password);
-    const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
-    connection.query(checkUserQuery,[req.body.email],(err,results)=>{
-      if(err)throw err;
-      if(results.length != 0){
-        res.redirect('/register?msg=register');
-      }else{
-        const insertUserQuery = `INSERT INTO users (user_ID,email,password)
-        VALUES
-      (default,?,?);`;
-        connection.query(insertUserQuery,[req.body.email, hashedPass],(err2, results2)=>{
-        if(err2){throw err2;}
-        res.redirect('/?msg=regSuccess');
-        loggedIn = true;
-        });
-      };
-    });
-  // }
+  const hashedPass = bcrypt.hashSync(req.body.password);
+  const checkUserQuery = `SELECT * FROM users WHERE email = ?`;
+  connection.query(checkUserQuery,[req.body.email],(err,results)=>{
+    if(err)throw err;
+    if(results.length != 0){
+      res.redirect('/register?msg=register');
+    }else{
+      const insertUserQuery = `INSERT INTO users (User_ID,email,password,User_Name)
+      VALUES
+    (default,?,?,?);`;
+      connection.query(insertUserQuery,[req.body.email, hashedPass, req.body.userName],(err2, results2)=>{
+      if(err2){throw err2;}
+      req.session.email = req.body.email;
+      req.session.userName = req.body.userName;
+      req.session.uid = results2.insertId;
+      req.session.loggedIn = true;
+      res.redirect('/?msg=regSuccess');
+      loggedIn = true;
+      });
+    };
+  });
 });
-
 
 router.get('/review',(req, res)=>{
   let msg;
   let genresArray = [
+    'Select a Genre',
     'Action',
     'Comedy',
     'Romance',
@@ -177,9 +179,9 @@ router.post('/reviewProcess', (req,res,next)=>{
   const author = req.body.author;
   const isbn = req.body.isbn;
   const rating = Number(req.body.reviewRadios);
-  const genre = req.body.testGenre;
+  const genre = req.body.nameGenreSelect;
   const uid = req.session.uid;
-  console.log(uid);
+
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
   const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
       VALUES
@@ -238,6 +240,7 @@ router.post('/loginProcess',(req, res, next)=>{
       }else{
         req.session.email = results[0].email;
         req.session.uid = results[0].User_ID;
+        req.session.userName = results[0].User_Name;
         req.session.loggedIn = true;
         loggedIn = true;
         res.redirect('/?msg=loginSuccess');
