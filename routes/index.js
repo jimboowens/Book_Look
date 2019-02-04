@@ -29,6 +29,7 @@ router.use('*',(req, res, next)=>{
 
 
 router.get('/',(req, res, next)=>{
+  // set up message to communicate with user across pages
   let msg;
   if(req.query.msg == 'regSuccess'){
     msg = 'You have successfully registered.';
