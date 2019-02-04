@@ -76,6 +76,10 @@ router.get('/home',(req,res)=>{
   res.redirect('/');
 });
 
+router.get('/contactUs', (req,res,next)=>{
+  res.render('contactUs');
+})
+
 router.get('/about',(req,res)=>{
   res.render('about', {});
 });
