@@ -130,39 +130,42 @@ router.get('/review',(req, res)=>{
   ];
   msg = "Write a review!";
   res.render('review',{msg, genresArray});
-})
+});
 
 
 router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
   const author = req.body.author;
   const isbn = req.body.isbn;
-  const rating = req.body.reviewRadios;
+  const rating = Number(req.body.reviewRadios);
+  const genre = req.body.testGenre;
+  const uid = req.session.uid;
+  console.log(uid);
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
   const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
       VALUES
-      (default,?,?);`;
+      (?,?,?);`;
   
   connection.query(checkIsbnQuery,[isbn],(err,results)=>{
     if(err)throw err;
     if(results.length == 0 ){
-      const insertIsbnQuery = `INSERT INTO books (Book_Title,Book_Author,ISBN)
+      const insertIsbnQuery = `INSERT INTO books (Book_Title,Book_Author,ISBN,Genre)
       VALUES
-      (?,?,?);`;
-      connection.query(insertIsbnQuery,[title,author,isbn],(err2, results2)=>{
+      (?,?,?,?);`;
+      connection.query(insertIsbnQuery,[title,author,isbn,genre],(err2, results2)=>{
         if(err2){throw err2};
       })
-      connection.query(insertReviewQuery,[rating,isbn],(err3, results3)=>{
+      connection.query(insertReviewQuery,[uid,rating,isbn],(err3, results3)=>{
         if(err3){throw err3};
       })
     }else{
-      const insertDuplicateBookQuery = `INSERT INTO duplicate_books (ISBN,Book_Title,Book_Author)
+      const insertDuplicateBookQuery = `INSERT INTO duplicate_books (ISBN,Book_Title,Book_Author,Genre)
         VALUES
-        (?,?,?);`;
-      connection.query(insertDuplicateBookQuery,[isbn,title,author],(err4, results4)=>{
+        (?,?,?,?);`;
+      connection.query(insertDuplicateBookQuery,[isbn,title,author,genre],(err4, results4)=>{
         if(err4){throw err4};
       })
-      connection.query(insertReviewQuery,[rating,isbn],(err5, results5)=>{
+      connection.query(insertReviewQuery,[uid,rating,isbn],(err5, results5)=>{
         if(err5){throw err5};
       })
     }
