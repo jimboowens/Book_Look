@@ -1,24 +1,28 @@
 <%include header%>
+
 <body>
-<%include navbar%>
-<div class="container">
-        <div class="content-wrapper mt-3">
-        <%let i=0%>
-        <% json.results.books.[0].forEach((book)=>{ %>
-            <%i++%>
-            <div class="col-sm">
-                <h1>Book rank: <%=i%></h1>
-                <p clas="book-info"><%book.book_image%></p>
-                <p class="book-info"> title - <%= book.book_details[0].title %></p>
-                <p class="book-info">rank last week - <%= book.rank_last_week || 'na' %></p>
-                <p class="book-info">weeks on list - <%= book.weeks_on_list || 'new this week'%></p>
-                <p class="book-info">short synopsis - <%=book.book_details[0].description%></p>
-                <p class="book-info">isbn - <%= book.isbns[0].isbn10 %></p>
-                <a href ="<%=book.amazon_product_url%>" target="_blank">Link to <%=book.book_details[0].title%>'s product page</a>
+        <%include navbar%>
+        <div class="container">
+                <div class="content-wrapper mt-3">
+                
+                <% json.results.books.forEach((book)=>{ %>
+                    
+                    <div class="col-sm">
+                        <h1 class="book-info">Book Rank: <%=book.rank%></h1>
+                        <!-- <p class="book-info"><%=//book.book_image%></p> -->
+                        <img src="<%=book.book_image%>" class="book-image">
+                        <p><a href ="<%=book.amazon_product_url%>"class="book-info"><%=book.title%></a></p>
+                        <p class="book-text">Synopsis - <%=book.description%></p>
+                        <p class="book-info"></p>
+                        <p class="book-info"></p>
+                        <p class="book-info"></p>
+                        <p class="book-info"></p>
+                </div>
+                <% }) %>
+            <%=//JSON.stringify(json)%>
+            </div>  
         </div>
-        <% }) %>
-    <%=//JSON.stringify(json)%>
-    </div>  
-</div>
-</body>
-<%include footer%>
+        </body>
+        <%include footer%>                   
+                        
+              
