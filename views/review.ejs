@@ -29,23 +29,33 @@
                         </div>
                         <div class="dropdown">
                             <div>Genre:</div>
-                            <button onclick="genreDropdown()" class="dropbtn my-1">Select One</button>
+                            <a onclick="genreDropdown()" class="dropbtn my-1">
+                                Select One
+                            </a>
                             <div id="my-genre-dropdown" class="dropdown-content">
                                 <% for(let i = 0; i<genresArray.length; i++) { %>
-                                <a href="genres"><%- genresArray[i] %></a>
+                                <option href="genres"><%- genresArray[i] %></option>
                                 <% } %>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Genre:</label>
                             <select class="form-control" id="exampleFormControlSelect1">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                                <% for(let i = 0; i<genresArray.length; i++) { %>
+                                <option href="genres"><%- genresArray[i] %></option>
+                                <% } %>
                             </select>
-                          </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <button class="dropdown-item" type="button">Action</button>
+                                <button class="dropdown-item" type="button">Another action</button>
+                                <button class="dropdown-item" type="button">Something else here</button>
+                            </div>
+                            </div>
                         <div class="submitDiv">
                             <button class="btn btn-primary">Submit!</button>
                         </div>
