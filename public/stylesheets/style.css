@@ -101,5 +101,16 @@ body {
 }
 
 .book-info{
+  display:flex;
   width: 100%;
+  margin-left: 75px;
+}
+.book-text{
+  max-width:90%;
+}
+
+.book-image{
+  display:flex;
+  width:25%;
+  margin-left: 50px;
 }

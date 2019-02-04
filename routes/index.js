@@ -49,14 +49,14 @@ router.get('/',(req, res, next)=>{
 
 router.get('/trending', (req,res)=>{  
 
-let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=`;
+let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key`;
 // https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=ndA72R1EIfGvSDeT6XhKwTn7G6EaOVzV  
-fetch(`${url}${config.nytApiKey}`, {
+fetch(`${url}=${config.nytApiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
-    console.log(json)
+    // console.log(json)
     res.render('trending', {json}); 
   });
 })
