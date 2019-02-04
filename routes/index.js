@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const config = require('../config');
 const bcrypt = require('bcrypt-nodejs');
+const fetch = require('node-fetch')
 const expressSession = require('express-session');
 const sessionOptions = config.sessionSecret;
 router.use(expressSession(sessionOptions))
@@ -31,6 +32,7 @@ router.use('*',(req, res, next)=>{
 
 
 router.get('/',(req, res, next)=>{
+  // set up message to communicate with user across pages
   let msg;
   if(req.query.msg == 'regSuccess'){
     msg = `Welcome ${req.session.userName}! You have successfully registered.`;
@@ -52,27 +54,78 @@ res.render('index', {msg});
 
 
 router.get('/trending', (req,res)=>{  
+  let choice = false;
+  res.render('trending', {choice}); 
+})
 
-let url = `https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key`;
-// https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=ndA72R1EIfGvSDeT6XhKwTn7G6EaOVzV  
-fetch(`${url}=${config.nytApiKey}`, {
+
+router.get('/trending/:id', (req,res, next)=>{
+  let msg;
+  choice = true;
+  const id = req.params.id;
+  console.log(req.params.id)
+  let url = `https://api.nytimes.com/svc/books/v3/lists/current/${id}.json?api-key`;
+//           https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=  
+fetch(`${url}=${config.apiKey}`, {
     method: `get`,
   })
   .then(response => { return response.json(); })
   .then(json => { 
+    json.results.books.forEach((book)=>{
+      const ISBN = book.primary_isbn10;
+      const title=book.title;
+      const author=book.author;
+      const publisher= book.publisher; 
+      const image=book.book_image;
+      const image2=book.book_image;
+      const image3=book.book_image;
+      const inputQuery = 'select * from books where isbn = ?;';
+      // console.log(ISBN,title,author,yearOfPublication,publisher,image)
+      connection.query(inputQuery,[ISBN],(err,results)=>{
+        if (err) throw err;
+        if (results.length == 0){
+          const insertQuery =  `insert into books (ISBN,Book_Title, Book_Author, Year_of_Publication, publisher, Image_URL_S, Image_URL_M, Image_URL_L)
+                                    values (?,?,?,null,?,?,?,?);`;
+          connection.query(insertQuery, [
+            ISBN,
+            title,
+            author,
+            null,
+            publisher,
+            image,
+            image2,
+            image3
+          ],(err,results)=>{
+            if (err) throw err;
+          });
+        };
+      });
+    });
     // console.log(json)
-    res.render('trending', {json}); 
+  let choice = true;
+    res.render('trending', {json,choice, msg}); 
   });
+  // choice = false;
 })
 
 router.get('/home',(req,res)=>{
   res.redirect('/');
 });
 
+router.get('/contactUs', (req,res,next)=>{
+  res.render('contactUs');
+})
+
+router.get('/about',(req,res)=>{
+  res.render('about', {});
+});
+
 router.get('/register',(req, res)=>{
   let msg;
   if(req.query.msg == 'register'){
     msg = 'This email adress is already registered.';
+  }else if(req.query.msg == 'badPass'){
+    msg = 'Your password must be at least 8 characters long'
   }
   res.render('register',{msg})
 });
@@ -102,7 +155,6 @@ router.post('/registerProcess',(req, res, next)=>{
   });
 });
 
-
 router.get('/review',(req, res)=>{
   let msg;
   let genresArray = [
@@ -121,7 +173,6 @@ router.get('/review',(req, res)=>{
   msg = "Write a review!";
   res.render('review',{msg, genresArray});
 });
-
 
 router.post('/reviewProcess', (req,res,next)=>{
   const title = req.body.title;
