@@ -1,25 +1,33 @@
-make the submit button work
+DONE - make the submit button work
     DONE -if ISBN already exists then just enter the rating, store the rest of the data 
-        in a misc table (never know when you might want it)
+            in a misc table (never know when you might want it)
     DONE -if ISBN does not exist then enter author, title, genre, rating in the DB
-    -make sure they log in before reviewing
-    -add multer
+    DONE -make sure they log in before reviewing
+    DONE - -add multer
 
 
 
 
-fix the spinning problem on the genre drop down
+DONE - fix the spinning problem on the genre drop down
 DONE - stop the ratings from being more than 1
 limit character inputs
-make the selected Genre appear and stay there
+DONE - make the selected Genre appear and stay there
 
-type name  for
 
-error handler if duplicate review entered
 
+
+Tuesday:
 login with user or email (one box to accept either)
-make them pick a genre
-dont let them leave anything blank
+dont let them leave anything blank on review
+dont let them leave anything blank on login
+dont let them leave anything blank on register
+error handler if duplicate review entered
+limit character inputs
+ISBN and book rating if null doesnt give an error
+
+
+
+
 
 
 
