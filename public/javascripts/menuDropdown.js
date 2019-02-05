@@ -1,3 +1,4 @@
+
 function menuDropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
     // $('#myDropdown').show();
@@ -49,3 +50,17 @@ $(function rating() {
         userLiked = 0;
     });
 });
+
+
+
+
+function empty() {
+    var x;
+    x = document.getElementById("titleId").value;
+    if (x == "") {
+        alert("Don't forget a book title!");
+        return false;
+    };
+}
+
+// hi

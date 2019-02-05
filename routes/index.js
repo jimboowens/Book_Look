@@ -185,7 +185,6 @@ router.post('/reviewProcess', (req,res,next)=>{
   const rating = Number(req.body.reviewRadios);
   const genre = req.body.nameGenreSelect;
   const uid = req.session.uid;
-
   const checkIsbnQuery = `SELECT * FROM books WHERE ISBN = ?`;
   const insertReviewQuery = `INSERT INTO ratings (User_ID,Book_Rating,ISBN)
       VALUES
