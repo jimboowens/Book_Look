@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row d-flex justify-content-center">
         <div class="col-10">
-            <div class="content-wrapper m-3 p-5">
+            <div class="content-wrapper p-5">
                 <h1>Review</h1>
                 <%- msg%>
                 <form action="/reviewProcess" method="post">
@@ -12,7 +12,7 @@
                         <label for="bookTitle">Book Title:</label>
                         <input type="text" class="form-control titleClass" name="title">
                         <label for="author">Author:</label>
-                        <input type="text" class="form-control" name="author" id="author">
+                        <input type="text" class="form-control" name="author">
                         <label for="isbn">ISBN:</label>
                         <input type="text" class="form-control" name="isbn">
                         <div class="form-check">
@@ -38,14 +38,13 @@
                         </div>
                        
                         <div class="submitDiv">
-                            <button class="btn btn-primary">Submit!</button>
+                            <button class="pageBtn">Submit!</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <%%>
 </div>
 
 </body>
