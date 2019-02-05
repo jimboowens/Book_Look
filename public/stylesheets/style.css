@@ -9,27 +9,48 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  font-family: 'Raleway', sans-serif;
+  color: #fff;
 }
 
+body a{
+  font-family: 'Raleway', sans-serif;
+  color: #fff;
+  text-decoration: none;
+}
 
 .navbar-bg{
-  background: rgb(201,193,144); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(201,193,144,1) 2%, rgba(213,206,166,1) 73%, rgba(213,206,166,1) 73%, rgba(229,227,183,1) 95%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(201,193,144,1) 2%,rgba(213,206,166,1) 73%,rgba(213,206,166,1) 73%,rgba(229,227,183,1) 95%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(201,193,144,1) 2%,rgba(213,206,166,1) 73%,rgba(213,206,166,1) 73%,rgba(229,227,183,1) 95%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c190', endColorstr='#e5e3b7',GradientType=0 ); /* IE6-9 */
+  background-color: #5f6254;
+  /* background-color: #333333; */
 }
 
 /* Dropdown Button */
 .dropbtn {
-  background-color: rgb(192, 194, 196);
-  color: rgb(0, 0, 0);
+  background-color: #5f6254;
+  color: #dc6c22;
   padding: 8px;
   font-size: 16px;
   border: none;
   cursor: pointer;
   border-radius: 7px;
 }
+
+.pageBtn {
+  background-color: #555555;
+  color: #fff;
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 7px;
+  border: 1px solid #dc6c22;
+  border-radius: 0.25rem;
+}
+
+.dropbtn a{
+  text-decoration: none;
+  color: #dc6c22;
+}
+
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
@@ -49,13 +70,13 @@ body {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px #212529;
   z-index: 1;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-  color: black;
+  color: #212529;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -69,10 +90,7 @@ body {
 
 
 .content-wrapper{
-  background-color: rgba(192, 194, 196, 0.95);
-  border-radius: 8px;
-  border: 2px solid rgba(182, 183, 184, 0.8);
-  /* margin: 0 25%; */
+  background-color: #212529;
 }
 
 .thing-to-be-filled{
@@ -101,16 +119,124 @@ body {
 }
 
 .book-info{
-  display:flex;
   width: 100%;
-  margin-left: 75px;
+  text-align:center;
 }
 .book-text{
   max-width:90%;
+  color:#212529;
 }
 
-.book-image{
+.book-image:hover{
+  transition: 3s ease-in-out;
+  box-shadow:10px;
+}
+
+.favicon{
+  height: 32px;
+}
+
+.profilePic{
+  width: 232px;
+  height: 232px;
+  border-radius: 50%;
+  margin: 40px 15px 15px 15px;
+}
+
+.bestSellers{
   display:flex;
-  width:25%;
-  margin-left: 50px;
+  margin: 15px;
+  color:#fff;
+  background-color: #555555;
+  border-color:#dc6c22;
+}
+
+.image-wrapper {
+	width: auto;
+	max-width: 350px;
+	height: auto;
+	margin: 5em auto;
+	overflow: hidden;
+	border: 10px solid #EEE5E5;
+	outline: 5px outset #EEE5E5;
+	position: relative;	
+	
+}
+.image-wrapper img {
+	width: 100%;
+	height: 100%;
+	margin-bottom: -5px;
+	transition: all 3s ease-out;
+	position: relative;
+	z-index: 2;
+}
+
+.image-wrapper:hover img {
+	transform: scale(1.2, 1.2);
+  z-index: 9;
+}
+
+.logo{
+  height: 45px;
+}
+.splashContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin-top: 150px;
+  /* background-color: rgb(95, 98, 84); */
+}
+/* .splash{
+  font-family: 'Raleway', sans-serif;
+  color: hsl(43, 73%, 39%);
+  -webkit-text-fill-color: hsl(43, 73%, 39%);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: hsl(43, 79%, 66%);
+} */
+
+#namePrimary{
+  font-size: 75px;
+  font-family: 'Raleway', sans-serif;
+  color: hsl(43, 73%, 39%);
+  -webkit-text-fill-color: hsl(43, 73%, 39%); /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: hsl(43, 79%, 66%);
+}
+
+#nameSecondary{
+  font-size: 32px;
+  font-family: 'Raleway', sans-serif;
+  color: #dc6c22;
+}
+
+#gbengaimg{
+  max-width: 300px;
+  margin: 0 50%;
+  transform: translateX(-50%);
+}
+
+.textWrapper{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.aboutUsText{
+  margin: 10px;
+  color: #fff;
+}
+
+.finePrint{
+  color: #fff;
+  font-size: 6px;
+}
+
+.spaceFiller{
+  height: 100vh;
+}
+
+.login{
+  margin: 25px 0 0 50px;
 }
