@@ -30,7 +30,6 @@ router.use('*',(req, res, next)=>{
   next();
 });
 
-
 router.get('/',(req, res, next)=>{
   // set up message to communicate with user across pages
   let msg;
