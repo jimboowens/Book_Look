@@ -48,7 +48,12 @@ router.get('/',(req, res, next)=>{
   }else if (req.query.msg == 'reviewFail'){
     msg = `Hmmm, ${req.session.userName} your review did not go through...`
   }
-res.render('index', {msg});
+  // const insertQuery = `select * from books order by rand() limit 25;`
+  // connection.query(insertQuery,(err,res)=>{
+  //   if (err) throw err;    
+    
+  res.render('index', {msg, res}); 
+  // });
 });
 
 
