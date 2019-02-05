@@ -258,4 +258,15 @@ router.get('/logout',(req, res, next)=>{
   res.redirect('/?msg=logoutSuccess')
 });
 
+router.get('/getDetails',(req, res)=>{
+  const title = req.query.q;
+  console.log(title)
+  const selectQuery = `SELECT * FROM books WHERE book_title = ?`
+  connection.query(selectQuery,[title],(error, results)=>{
+    if(error){throw error}
+    res.json(results[0])
+  })
+})
+
+
 module.exports = router;
