@@ -10,38 +10,66 @@
                 <form action="/reviewProcess" method="post">
                     <div class="form-group-one">
                         <label for="bookTitle">Book Title:</label>
-                        <input type="text" class="form-control" name="title">
+                        <input type="text" class="form-control cantBeBlank" name="title" id="titleId">
                         <label for="author">Author:</label>
-                        <input type="text" class="form-control" name="author">
+                        <input type="text" class="form-control cantBeBlank" name="author">
                         <label for="isbn">ISBN:</label>
-                        <input type="text" class="form-control" name="isbn">
+                        <input type="text" class="form-control cantBeBlank" name="isbn">
                         <div class="form-check">
-                            <input class="form-check-input likeClass" type="radio" name="reviewRadios" id="likeId" value="1">
+                            <input class="form-check-input likeClass cantBeBlank" type="radio" name="reviewRadios" id="likeId" value="1">
                             <label class="form-check-label" for="likeRadio">
                               Like
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input dislikeClass" type="radio" name="reviewRadios" id="dislikeId" value="0">
+                            <input class="form-check-input dislikeClass cantBeBlank" type="radio" name="reviewRadios" id="dislikeId" value="0">
                             <label class="form-check-label" for="dislikeRadio">
                               Dislike
                             </label>
                         </div>
-                        
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Genre:</label>
-                            <select class="form-control genreFormControlClass" id="exampleFormControlSelect1" name="nameGenreSelect">
+                            <select class="form-control genreFormControlClass cantBeBlank" id="exampleFormControlSelect1" name="nameGenreSelect">
                                 <% for(let i = 0; i<genresArray.length; i++) { %>
-                                <option id ="genreId" class="genreClass" href="genres" name="nameGenre" value="<%- genresArray[i] %>"><%- genresArray[i] %></option>
+                                <option id ="genreId" class="genreClass cantBeBlank" href="genres" name="nameGenre" value="<%- genresArray[i] %>"><%- genresArray[i] %></option>
                                 <% } %>
                             </select>
                         </div>
-                       
                         <div class="submitDiv">
-                            <button class="btn btn-primary">Submit!</button>
+                            <button class="btn btn-primary submitButton" onmouseover="empty()">Submit!</button>
                         </div>
                     </div>
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Launch demo modal
+                      </button>
+                    
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalCenterTitle">About Me</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              I am a Fullstack web developer, with a passion for creating code, and learning new languages.
+                              When I'm not developing code, I like to spend time hiking with my wife and son, and we
+                              are on a mission to visit national parks in all 50 states.  Our progress so far! 
+                            </div>
+                            <div class="modal-footer">
+                                <img id="travel" src="" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                 </form>
+
+                
+
+
             </div>
         </div>
     </div>
