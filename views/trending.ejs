@@ -4,14 +4,14 @@
     <%include navbar%>
     <%if (!choice){%>
     <div class="container">
-        <div class="row">    
-            <div class="col-sm-6 col-sm-offset-3 text-center">
-                <h2 class="text-info">Please select what genre of trending you would like to see:</h2>
-                <a href="trending/hardcover-fiction" id = "trending/hardcover-fiction" button class="btn btn-success clickHere bestSellers">Hardcover Fiction</a>
-                <a href="trending/hardcover-nonfiction" id = "trending/hardcover-nonfiction" button class="btn btn-success clickHere bestSellers">Hardcover Nonfiction</a>
-                <a href="trending/paperback-fiction" id = "trending/paperback-fiction" button class="btn btn-success clickHere bestSellers">Paperback Fiction</a>
-                <a href="trending/e-book-fiction" id = "trending/e-book-fiction" button class="btn btn-success clickHere bestSellers">e-Book Fiction</a>
-                <a href="trending/e-book-nonfiction" id = "trending/e-book-nonfiction" button class="btn btn-success clickHere bestSellers">e-Book Nonfiction</a>
+        <div class="row d-flex justify-content-center">    
+            <div class="content-wrapper m-3 p-5">
+                <h2 class="book-info">Please select what genre of trending you would like to see:</h2>
+                <a href="trending/hardcover-fiction" id = "trending/hardcover-fiction" button class="btn clickHere bestSellers">Hardcover Fiction</a>
+                <a href="trending/hardcover-nonfiction" id = "trending/hardcover-nonfiction" button class="btn clickHere bestSellers">Hardcover Nonfiction</a>
+                <a href="trending/paperback-nonfiction" id = "trending/paperback-nonfiction" button class="btn clickHere bestSellers">Paperback Nonfiction</a>
+                <a href="trending/e-book-fiction" id = "trending/e-book-fiction" button class="btn clickHere bestSellers">e-Book Fiction</a>
+                <a href="trending/e-book-nonfiction" id = "trending/e-book-nonfiction" button class="btn clickHere bestSellers">e-Book Nonfiction</a>
             </div>
         </div>
     </div>
@@ -23,7 +23,9 @@
                 <div class="col-sm">
                     <h4 class="book-info">Book Rank: <%=book.rank%></h4>
                     <!-- <p class="book-info"><%=//book.book_image%></p> -->
-                    <img src="<%=book.book_image%>" class="book-image">
+                    <div class="image-wrapper">
+                        <a href ="<%=book.amazon_product_url%>"target="_blank"><img src="<%=book.book_image%>"></a>
+                    </div>
                     <p><a href ="<%=book.amazon_product_url%>"class="book-info" target="blank"><%=book.title%></a></p>
                     <p class="book-text">Synopsis - <%=book.description%></p>
                     <p class="book-info"></p>
