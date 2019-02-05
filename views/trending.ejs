@@ -5,39 +5,38 @@
     <%if (!choice){%>
     <div class="container">
         <div class="row d-flex justify-content-center">    
-            <div class="content-wrapper m-3 p-5">
+            <div class="content-wrapper p-5 spaceFiller">
                 <h2 class="book-info">Please select what genre of trending you would like to see:</h2>
                 <a href="trending/hardcover-fiction" id = "trending/hardcover-fiction" button class="btn clickHere bestSellers">Hardcover Fiction</a>
                 <a href="trending/hardcover-nonfiction" id = "trending/hardcover-nonfiction" button class="btn clickHere bestSellers">Hardcover Nonfiction</a>
                 <a href="trending/paperback-nonfiction" id = "trending/paperback-nonfiction" button class="btn clickHere bestSellers">Paperback Nonfiction</a>
                 <a href="trending/e-book-fiction" id = "trending/e-book-fiction" button class="btn clickHere bestSellers">e-Book Fiction</a>
-                <a href="trending/e-book-nonfiction" id = "trending/e-book-nonfiction" button class="btn clickHere bestSellers">e-Book Nonfiction</a>
+                <a href="trending/e-book-nonfiction" id = "trending/e-book-nonfiction" button class="btn bestSellers">e-Book Nonfiction</a>
             </div>
         </div>
     </div>
     <%}else{%>
     <div class="container">
-        <div class="content-wrapper mt-3">
-            <div><h1>Trending Books:</h1></div>
-            <% json.results.books.forEach((book)=>{ %>
-                <div class="col-sm">
+        <div class="content-wrapper p-5">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Trending Books:</h1>
+                </div>
+                <div class="col-12">
+                <% json.results.books.forEach((book)=>{ %>
                     <h4 class="book-info">Book Rank: <%=book.rank%></h4>
                     <!-- <p class="book-info"><%=//book.book_image%></p> -->
                     <div class="image-wrapper">
                         <a href ="<%=book.amazon_product_url%>"target="_blank"><img src="<%=book.book_image%>"></a>
                     </div>
-                    <p><a href ="<%=book.amazon_product_url%>"class="book-info" target="blank"><%=book.title%></a></p>
-                    <p class="book-text">Synopsis - <%=book.description%></p>
-                    <p class="book-info"></p>
-                    <p class="book-info"></p>
-                    <p class="book-info"></p>
-                    <p class="book-info"></p>
+                    <p class="book-info"><a href ="<%=book.amazon_product_url%>"class="book-info" target="blank"><%=book.title%></a></p>
+                    <p class="book-info">Synopsis - <%=book.description%></p>
+                    <% }) %>
                 </div>
-            <% }) %>
+            </div>
         </div>
     </div> 
     <%}%>
-    <%=//JSON.stringify(json)%> 
 </body>
 <%include footer%>                   
                         

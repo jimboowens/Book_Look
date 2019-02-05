@@ -1,11 +1,11 @@
 <div class="container-fluid navbar-bg">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 pt-1">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 d-md-none">
                         <div class="dropdown">
-                            <button onclick="menuDropdown()" class="dropbtn my-1">Menu</button>
+                            <button onclick="menuDropdown()" class="dropbtn">Menu</button>
                             <div id="myDropdown" class="dropdown-content">
                                 <% if(!loggedIn){ %>
                                 <a href="/">Home</a>
@@ -27,13 +27,29 @@
                             </div>
                         </div>       
                     </div>
-                    <div class="col-6 d-flex">
-                        <div class="ml-auto my-1">
-                            <form>
-                                <input class="form-control" type="text" placeholder="Search" />
-                            </form>
-                        </div>
+                   <% if(!loggedIn) { %>
+                    <div class="col-9 d-none d-md-block">
+                        <button class="dropbtn"><a href="/">Home</a></button>
+                        <button class="dropbtn"><a href="/about">About Us</a></button>
+                        <button class="dropbtn"><a href="/trending">Trending</a></button>
+                        <button class="dropbtn"><a href="/contactUs">Contact Us</a></button>
+                        <button class="dropbtn"><a href="/register">Register</a></button>
+                        <button class="dropbtn"><a href="/login">Login</a></button>
                     </div>
+
+                  <% }else{ %>
+                    <div class="col-9 d-none d-md-block">
+                        <button class="dropbtn"><a href="/home">Home</a></button>
+                        <button class="dropbtn"><a href="about">About Us</a></button>
+                        <button class="dropbtn"><a href="review">Review</a></button>
+                        <button class="dropbtn"><a href="trending">Trending</a></button>
+                        <button class="dropbtn"><a href="contactUs">Contact Us</a></button>
+                        <button class="dropbtn"><a href="logout">Logout</a></button>
+                    </div>
+                 <% } %>
+                 <div class="col-6 col-md-3 ml-auto">
+                     <img src="/images/logo.png" class="logo"/>
+                 </div>
                 </div>
             </div>
         </div>
