@@ -11,34 +11,33 @@
                     <div class="form-group-one">
                         <label for="bookTitle">Book Title:</label>
 
-                        <input type="text" class="form-control cantBeBlank titleClass" name="title" id="titleId">
+                        <input type="text" class="form-control cantBeBlank titleClass" name="title" id="titleId" required>
                         <label for="author">Author:</label>
-                        <input type="text" class="form-control cantBeBlank" name="author">
+                        <input type="text" class="form-control cantBeBlank" name="author" id="authorId" required>
                         <label for="isbn">ISBN:</label>
-                        <input type="text" class="form-control cantBeBlank" name="isbn">
+                        <input type="text" class="form-control cantBeBlank" name="isbn" id="isbnId" required>
                         <div class="form-check">
-                            <input class="form-check-input likeClass cantBeBlank" type="radio" name="reviewRadios" id="likeId" value="1">
+                            <input class="form-check-input likeClass cantBeBlank" type="radio" name="reviewRadios" id="likeId" value="1" >
                             <label class="form-check-label" for="likeRadio">
                               Like
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input dislikeClass cantBeBlank" type="radio" name="reviewRadios" id="dislikeId" value="0">
+                            <input class="form-check-input dislikeClass cantBeBlank" type="radio" name="reviewRadios" id="dislikeId" value="0" required>
                             <label class="form-check-label" for="dislikeRadio">
                               Dislike
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Genre:</label>
-                            <select class="form-control genreFormControlClass cantBeBlank" id="exampleFormControlSelect1" name="nameGenreSelect">
+                            <select class="form-control genreFormControlClass cantBeBlank" id="exampleFormControlSelect1" name="nameGenreSelect" required>
                                 <% for(let i = 0; i<genresArray.length; i++) { %>
-                                <option id ="genreId" class="genreClass cantBeBlank" href="genres" name="nameGenre" value="<%- genresArray[i] %>"><%- genresArray[i] %></option>
+                                <option id ="genreId" class="genreClass cantBeBlank" href="genres" name="nameGenre" value="<%- genresNamesArray[i] %>" ><%- genresArray[i] %></option>
                                 <% } %>
                             </select>
                         </div>
                         <div class="submitDiv">
-                            <button class="btn btn-primary submitButton" onmouseover="empty()">Submit!</button>
-
+                            <button class="pageBtn" >Submit!</button>
                         </div>
                     </div>
                 </form>

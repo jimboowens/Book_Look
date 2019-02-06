@@ -144,21 +144,51 @@ body a{
 }
 
 .bestSellers{
-  display:flex;
   margin: 15px;
   color:#fff;
   background-color: #555555;
   border-color:#dc6c22;
+  align-self: center;
+  width: 50%;
 }
+
+.buttonCenterClass{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+a:hover{
+  text-decoration: none;
+  color: #dc6c22;
+}
+
+.trendingClass{
+  margin: 0 auto;
+  /* transform: translateX(-50%); */
+  text-align: center;
+}
+
+.hrClass{
+  border-width: 3px;
+  background-color: #dc6c22;
+  color: #dc6c22;
+  margin-top: 75px;
+  margin-bottom: 50px;
+}
+
 
 .image-wrapper {
 	width: auto;
 	max-width: 350px;
 	height: auto;
-	margin: 5em auto;
+	margin: 2em auto;
 	overflow: hidden;
 	border: 10px solid #EEE5E5;
-	outline: 5px outset #EEE5E5;
+	outline: 5px outset #dc6c22;
 	position: relative;	
 	
 }
