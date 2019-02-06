@@ -51,16 +51,3 @@ $(function rating() {
     });
 });
 
-
-
-
-function empty() {
-    var x;
-    x = document.getElementById("titleId").value;
-    if (x == "") {
-        alert("Don't forget a book title!");
-        return false;
-    };
-}
-
-// hi

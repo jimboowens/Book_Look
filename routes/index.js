@@ -174,8 +174,21 @@ router.get('/review',(req, res)=>{
     'Adventure',
     'Business'
   ];
+  let genresNamesArray = [
+    '',
+    'Action',
+    'Comedy',
+    'Romance',
+    'Biography',
+    'Childrens',
+    'Fantasy',
+    'Mystery',
+    'Self Help',
+    'Adventure',
+    'Business'
+  ];
   msg = "Write a review!";
-  res.render('review',{msg, genresArray});
+  res.render('review',{msg, genresArray, genresNamesArray});
 });
 
 router.post('/reviewProcess', (req,res,next)=>{
