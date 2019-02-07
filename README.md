@@ -29,7 +29,7 @@ The application wraps up with pages about the authors as well as a mission stamt
 * AWS
 
 ## Challenges and Solutions
-Most challenges we came accross centered around our desire to reach as many of our stretch goals as possible. Our original idea was to build an application which would return book recommendations to users based on previous books they've read and liked. We made tough decisions to cut certain functionality as the project progressed.
+Most challenges we came accross centered around our desire to reach as many of our stretch goals as possible. Our original idea was to build an application which would return book recommendations to users based on previous books they've read and liked. We made tough decisions to cut certain functionality as the project progressed. Uploading our front and back end files to AWS was a challenge, and making it serviceable as well as secure against sequel injection, spamming, etc... was a particular challenge. We were able to make bring the website up, and it is functional on both http and https ports.
 
 ## Stretch Goals
 * Machine Learning
