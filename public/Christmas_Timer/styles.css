@@ -1,0 +1,20 @@
+body{
+    /* background-color: blue; */
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTCkSahmNEnZ2FwK4FqOrsmvNYbKtoDr-Wpwlo4lN8ocS9QG-u') no-repeat center;
+    background-size: cover;
+    color: green;
+    height: 100vh;
+    text-align: center;
+}
+
+h1{
+    font-size: 40px;
+    margin: 40px 0px 0px;
+}
+
+.time-unit, .time-unit span{
+    display: inline-block;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid green;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pithos</title>
+    <link rel="shortcut icon" href="./imagebrew s/pithos-icon-vect_color2.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="maps.css" />
+    <link href="https://fonts.googleapis.com/css?family=Abhaya+Libre|Cormorant|Cormorant+Garamond|Crimson+Text|Eczar|IM+Fell+DW+Pica|IM+Fell+Great+Primer|Josefin+Slab|Lora|Unna"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="backdrop"></div>
+    <div class="modal-1"></div>
+
+    <!-- ============ -->
+
+    <div class="container">
+        <section class="header">
+            <div class="sun">
+                <button id="pithos-logo"></button>
+            </div>
+        </section>
+        <section class="main">
+                <div class="circle">
+                    <div class="intro-container">
+                        <div class="intro-logo"></div>
+                        <p class="intro-text">
+                            noun<br>
+                            pi·​thos | ˈpiˌthäs, ˈpī<br>
+                            plural pithoi<br>
+                            Definition of pithos: a very large earthenware jar with a wide round mouth used throughout the ancient Greek world especially for holding and storing large quantities of food (as grain) or liquids (as wine, oil) and sometimes for the burial of the dead.</p>
+                    </div>
+                </div>
+        </section>
+        <section class="nav">  
+            <div class="button-wrapper">
+                <button class="button" id="about">ABOUT</button>
+                <button class="button" id="animals">ANIMALS</button>
+                <button class="button" id="plants">PLANTS</button>
+            </div>  
+        </section> 
+        <section class="footer">
+            <div class="compass">
+                <button class="submit-button"></button>
+            </div>
+        </section>
+        <div id="map">looky here</div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="config.js"></script>
+    <script src="./research_data/georgiaFarmData.js"></script>
+    <script src="main.js"></script>
+    <script src="maps.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWqoJ35EyWPOEPTryUly1ktzdkY8T8UXU&callback=initMap">
+    </script>
+    </body>
+    
+    </html>
