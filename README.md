@@ -11,7 +11,7 @@
 BookLook is an online web application built on Node.js that allows users to submit reviews on books they've read and view books currently trending on the NY Tmes bestsellers List. 
 
 ## Features
-Users are immedaitely taken to a splash page where they can select from a number of application features. The user experience begins with the tranding feature which displays a user friendly page startig with the highest ranked bestseller's according to the New York Times.
+Users are immediately taken to a splash page where they can select from a number of application features. The user experience begins with the tranding feature which displays a user friendly page startig with the highest ranked bestseller's according to the New York Times.
 From there, users are able to delve deeper in to the application by registering with the site which inserts a name, email address, and hashed password to our SQL database.
 Once registered, users are able to submit a review on a book they've read which will also be entered in to our SQL database. Registered users are now able to take advantage of the log out and log in fuctionality.
 The application wraps up with pages about the authors as well as a mission stamtent page about BookLook.
