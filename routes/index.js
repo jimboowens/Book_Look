@@ -9,7 +9,7 @@ router.use(expressSession(sessionOptions))
 const mysql = require('mysql');
 let connection = mysql.createConnection(config.db);
 connection.connect()
-let loggedIn = false;
+let loggedIn;
 
 
 router.use('*',(req, res, next)=>{
@@ -172,7 +172,7 @@ router.get('/review',(req, res)=>{
     'Mystery',
     'Self Help',
     'Adventure',
-    'Business'
+    'Business',
   ];
   let genresNamesArray = [
     '',
@@ -185,7 +185,7 @@ router.get('/review',(req, res)=>{
     'Mystery',
     'Self Help',
     'Adventure',
-    'Business'
+    'Business',
   ];
   msg = "Write a review!";
   res.render('review',{msg, genresArray, genresNamesArray});
